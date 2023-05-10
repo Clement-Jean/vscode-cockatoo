@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+message Position {
+  uint64 line = 1;
+  uint64 character = 2;
+}
+
+message Range {
+  Position start = 1;
+  Position end = 2;
+}
+
+message Selection {
+  Position anchor = 1;
+  Position active = 2;
+}
+
+message TextDocumentContentChange {
+  Range range = 1;
+  uint64 range_offset = 2;
+  uint64 range_length = 3;
+  string text = 4;
+}
+
+message StartingPoint {
+  uint64 position = 1;
+  string content = 2;
+  string language = 3;
+  repeated Selection selections = 4;
+}
+
+message StopPoint {
+  uint64 position = 1;
+  string name = 2;
+}
+
+message Frame {
+  uint64 position = 1;
+  repeated TextDocumentContentChange changes = 2;
+  repeated Selection selections = 3;
+}
+
+message Action {
+  oneof value {
+    StartingPoint starting_point = 1;
+    StopPoint stop_point = 2;
+    Frame frame = 3;
+  }
+}
+
+message Record {
+  repeated Action actions = 1;
+}
