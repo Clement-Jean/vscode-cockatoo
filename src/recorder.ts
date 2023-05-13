@@ -1,11 +1,16 @@
-import * as os from 'os';
-import * as fs from 'fs';
-import * as path from 'path';
+import * as os from "os";
+import * as fs from "fs";
+import * as path from "path";
 import * as vscode from "vscode";
 
 import { Action, StartingPoint, Frame, StopPoint, Record } from "./gen/recorder_pb";
 import { mapSelection, mapTextDocumentContentChange, toSelection, toTextDocumentContentChange } from "./mappers";
 import { CacheProvider } from "./cache";
+import { EXTENSION_NAME } from "./constants";
+import { TextDocumentContentChange } from "./gen/recorder_pb";
+import { Range } from "./gen/recorder_pb";
+import { Selection } from "./gen/recorder_pb";
+import { Position } from "./gen/recorder_pb";
 
 export default class Recorder {
   private static instance: Recorder;
@@ -356,7 +361,7 @@ export default class Recorder {
       }
 
       const options: vscode.SaveDialogOptions = {
-        saveLabel: 'Export',
+        saveLabel: "Export",
         defaultUri: vscode.Uri.file(`${os.homedir()}/${picked}`),
       };
 
@@ -385,7 +390,7 @@ export default class Recorder {
   public import(cache: CacheProvider) {
     const options: vscode.OpenDialogOptions = {
       canSelectMany: true,
-      openLabel: 'Import',
+      openLabel: "Import",
     };
 
     vscode.window.showOpenDialog(options).then((files: vscode.Uri[] | undefined) => {
@@ -417,7 +422,7 @@ export default class Recorder {
     if (this._isRecording) {
       let item = this._actions.at(-1);
 
-      // a frame with text '' gets inserted after hiting backspace
+      // a frame with text "" gets inserted after hiting backspace
       if (item !== undefined && item.value.case === "frame" && item.value.value.changes[0].text.length === 0) {
         this._actions.pop();
       }
