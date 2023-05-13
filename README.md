@@ -1,6 +1,6 @@
 ![cockatoo](./assets/cockatoo.png)
 
-# vscode-recorder README
+# vscode-cockatoo
 
 ## Features
 
