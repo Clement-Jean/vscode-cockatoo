@@ -32,50 +32,64 @@
         "key": "cmd+shift+r backspace"
       }
     ],
+    "configuration": {
+      "title": "Cockatoo",
+      "properties": {
+        "vscode-cockatoo.templates": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Path to the cockatoo templates"
+        }
+      }
+    },
     "commands": [
       {
         "command": "clement-jean.vscode-cockatoo.recordMacro",
         "title": "Record macro",
-        "category": "Recorder"
+        "category": "Cockatoo"
       },
       {
         "command": "clement-jean.vscode-cockatoo.exitMacro",
         "title": "Exit macro",
-        "category": "Recorder"
+        "category": "Cockatoo"
       },
       {
         "command": "clement-jean.vscode-cockatoo.saveMacro",
         "title": "Save macro",
-        "category": "Recorder"
+        "category": "Cockatoo"
       },
       {
         "command": "clement-jean.vscode-cockatoo.playMacro",
         "title": "Play macro",
-        "category": "Recorder"
+        "category": "Cockatoo"
       },
       {
         "command": "clement-jean.vscode-cockatoo.removeMacro",
         "title": "Remove macro",
-        "category": "Recorder"
+        "category": "Cockatoo"
       },
       {
         "command": "clement-jean.vscode-cockatoo.insertStop",
         "title": "Insert Soft Stop Point",
-        "category": "Recorder"
+        "category": "Cockatoo"
       },
       {
         "command": "clement-jean.vscode-cockatoo.insertNamedStop",
         "title": "Insert Named Stop Point",
-        "category": "Recorder"
+        "category": "Cockatoo"
       },
       {
         "command": "clement-jean.vscode-cockatoo.exportMacro",
         "title": "Export Macro",
-        "category": "Recorder"
+        "category": "Cockatoo"
       },
       {
         "command": "clement-jean.vscode-cockatoo.importMacro",
         "title": "Import Macro",
+        "category": "Cockatoo"
       },
       {
         "command": "clement-jean.vscode-cockatoo.importTemplate",
