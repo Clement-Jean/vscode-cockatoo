@@ -76,7 +76,11 @@
       {
         "command": "clement-jean.vscode-cockatoo.importMacro",
         "title": "Import Macro",
-        "category": "Recorder"
+      },
+      {
+        "command": "clement-jean.vscode-cockatoo.importTemplate",
+        "title": "Import Template(s)",
+        "category": "Cockatoo"
       }
     ]
   },

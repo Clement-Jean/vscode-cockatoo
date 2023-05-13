@@ -11,7 +11,8 @@ import {
 	EXPORT_COMMAND_NAME,
 	IMPORT_COMMAND_NAME,
 	EXIT_COMMAND_NAME,
-	RM_LAST_CHAR_KEYBINDING_NAME
+	RM_LAST_CHAR_KEYBINDING_NAME,
+	IMPORT_TEMPLATE_COMMAND_NAME
 } from './constants';
 
 export function activate(context: vscode.ExtensionContext) {
@@ -73,6 +74,11 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand(
 			RM_LAST_CHAR_KEYBINDING_NAME,
 			recorder.removeLastChar,
+			recorder
+		),
+		vscode.commands.registerCommand(
+			IMPORT_TEMPLATE_COMMAND_NAME,
+			() => { recorder.importTemplate(cache); },
 			recorder
 		)
 	);

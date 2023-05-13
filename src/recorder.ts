@@ -430,6 +430,107 @@ export default class Recorder {
     }
   }
 
+  //#region IMPORT TEMPLATE
+  private readFile(path: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+        fs.readFile(path, (error, data) => error ? reject(error) : resolve(data.toString()));
+    });
+  }
+
+  private contentToActions(content: string): Record {
+    const record = new Record();
+    let position = 1;
+    let character = 1;
+    let line = 0;
+
+    const sp = new StartingPoint({
+      content: "",
+      language: "plaintext",
+    });
+
+    record.actions.push(new Action({
+      value: {
+        case: "startingPoint",
+        value: sp,
+      }
+    }));
+
+    for (let i = 0; i < content.length; i++) {
+      const c = content[i];
+
+      if (c === '\n') {
+        line++;
+        character = 0;
+      }
+
+      record.actions.push(new Action({
+        value: {
+          case: "frame",
+          value: new Frame({
+            position: BigInt(position),
+            changes: [
+              new TextDocumentContentChange({
+                range: new Range({
+                  start: new Position({ line: BigInt(c === '\n' ? line - 1 : line), character: BigInt(position - 1) }),
+                  end: new Position({ line: BigInt(c === '\n' ? line - 1 : line), character: BigInt(position - 1) })
+                }),
+                rangeOffset: BigInt(i + 1),
+                text: c
+              })
+            ],
+            selections: [
+              new Selection({
+                anchor: new Position({ line: BigInt(line), character: BigInt(character) }),
+                active: new Position({ line: BigInt(line), character: BigInt(character) })
+              })
+            ]
+          })
+        }
+      }));
+
+      position++;
+      character++;
+    }
+
+    return record;
+  }
+
+  public async importTemplate(cache: CacheProvider) {
+    try {
+      const template = vscode.workspace.getConfiguration(EXTENSION_NAME);
+
+      if (template.has("templates")) {
+	      const p: string = template.get("templates")!;
+        const dir = await fs.promises.opendir(p);
+
+        for await (const dirent of dir) {
+          const content = await this.readFile(path.join(p, dirent.name));
+          const record = this.contentToActions(content);
+          const keys = await cache.keys();
+
+          if (keys.includes(dirent.name)) {
+            const question = `Do you want override ${dirent.name}?`;
+            const yes = "Yes";
+            const no = "No";
+
+            vscode.window
+              .showInformationMessage(question, yes, no)
+              .then(async answer => {
+                if (answer === yes) {
+                  await cache.put(dirent.name, record);
+                }
+              });
+          } else {
+            await cache.put(dirent.name, record);
+          }
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  //#endregion
+
   dispose() {
     if (this._disposables) {
       this._disposables.dispose();
