@@ -274,12 +274,16 @@ export default class Recorder {
     editor.selections = selections;
 
     // move scroll focus if needed
-    const { start, end } = editor.selections[0];
+    if (editor.selections.length > 0 &&
+        'start' in editor.selections[0] &&
+        'end' in editor.selections[0]) {
+      const { start, end } = editor.selections[0];
 
-    editor.revealRange(
-      new vscode.Range(start, end),
-      vscode.TextEditorRevealType.InCenterIfOutsideViewport
-    );
+      editor.revealRange(
+        new vscode.Range(start, end),
+        vscode.TextEditorRevealType.InCenterIfOutsideViewport
+      );
+    }
   }
 
   public onType(text: string) {
