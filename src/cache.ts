@@ -48,7 +48,10 @@ export class CacheProvider {
 	}
 
 	public async remove(name: string) {
-		delete this._cache.records[name];
+		if (name in this._cache.records) {
+			delete this._cache.records[name];
+		}
+
 		await this.context.globalState.update(this._cacheName, this._cache);
 	}
 
