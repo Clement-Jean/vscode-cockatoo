@@ -510,6 +510,11 @@ export default class Recorder {
 
       if (template.has("templates")) {
 	      const p: string = template.get("templates")!;
+
+        if (fs.existsSync(p)) {
+          return;
+        }
+
         const dir = await fs.promises.opendir(p);
 
         for await (const dirent of dir) {
