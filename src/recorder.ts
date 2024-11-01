@@ -42,11 +42,6 @@ export default class Recorder {
 
   private onDidChangeTextEditorSelection(e: vscode.TextEditorSelectionChangeEvent) {
     const changes = this._changes.map(mapTextDocumentContentChange);
-
-    if (changes.length === 0) {
-      return;
-    }
-
     const selections = e.selections.map(mapSelection) || [];
     const f = new Frame({
       position: BigInt(this._actions.length),
